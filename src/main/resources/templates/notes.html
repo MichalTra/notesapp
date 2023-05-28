@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Notes Overview</title>
+</head>
+<body>
+
+    <!-- header -->
+        <div th:replace="~{header :: header}">...</div>
+    <!-- //header -->
+
+    <div>
+        <table>
+            <tr>
+                <th>Done</th>
+                <th>Labels</th>
+                <th>Deadline</th>
+                <th>Description</th>
+                <th>Change Status</th>
+                <th>Edit</th>
+            </tr>
+            <tr th:each="item: ${notesList}">
+                <td th:text="${item.done}"></td>
+                <td>...</td>
+                <td th:text="${item.deadline}"></td>
+                <td th:text="${item.description}"></td>
+                <td><button th:action="${/changeNoteDoneStatus(id=${item.id}})}" th:text="${item.done} ? 'Mark &#10003;' : 'Unmark &#10003;'"></button></td>
+                <td><button th:action="${/editNote(id=${item.id})}">Edit</button></td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+</html>

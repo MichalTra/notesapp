@@ -1,0 +1,3 @@
+use notes;
+
+INSERT INTO holidays(id, localization, date, description) VALUES ()

@@ -1,0 +1,9 @@
+center {
+    margin: auto;
+    background-color: yellow;
+}
+
+flex-row {
+    display: flex;
+    flex-direction: row;
+}

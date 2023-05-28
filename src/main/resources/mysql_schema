@@ -1,0 +1,34 @@
+CREATE DATABASE notes;
+
+use notes;
+
+CREATE TABLE IF NOT EXISTS `users` (
+   `user_id` INT AUTO_INCREMENT PRIMARY KEY,
+   `username` VARCHAR(20) NOT NULL,
+   `password` VARCHAR(100) NOT NULL,
+   `language` VARCHAR(3) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS `events` (
+   `id` INT AUTO_INCREMENT PRIMARY KEY,
+   `user_id` INT NOT NULL,
+   `description` VARCHAR(200) NOT NULL,
+   `deadline` TIMESTAMP NOT NULL,
+   `modified_at` TIMESTAMP,
+   `done` BOOLEAN NOT NULL,
+   `labels` VARCHAR(20)
+);
+
+CREATE TABLE IF NOT EXISTS `birthdays` (
+   `id` INT AUTO_INCREMENT PRIMARY KEY,
+   `user_id` INT NOT NULL,
+   `date` TIMESTAMP,
+   `description` VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS `holidays` (
+   `id` INT AUTO_INCREMENT PRIMARY KEY,
+   `localization` VARCHAR(3) NOT NULL,
+   `date` TIMESTAMP,
+   `description` VARCHAR(50) NOT NULL
+);

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Note App</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- header -->
+        <div th:replace="header :: header"></div>
+  <!-- //header -->
+
+  <div class="center">
+    <form th:action="@{/submitLoginInformation}" method="post">
+      <div class="flex-row">
+        <div>
+          <label for="username">Username</label>
+          <br>
+          <input type="text" id="username"/>
+        </div>
+        <div>
+          <label for="password">Password</label>
+          <br>
+          <input type="password" id="password"/>
+        </div>
+      </div>
+      <label for="create">Create New User</label>
+      <input type="checkbox" id="create"/>
+      <br>
+      <button>Proceed</button>
+    </form>
+  </div>
+
+</body>
+</html>
