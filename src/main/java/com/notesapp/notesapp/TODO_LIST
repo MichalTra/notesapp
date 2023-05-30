@@ -3,6 +3,8 @@ Implement method to change done status
 
 Implement multiple users
 
-Adjustments in UI - login form alignment
+Adjustments in UI - login form alignment, error messages
+
+Think about special chars in password (allowed/forbidden)
 
 LoginController should handle different types of errors

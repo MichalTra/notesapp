@@ -9,21 +9,23 @@ CREATE TABLE IF NOT EXISTS `users` (
    `language` VARCHAR(3) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS `events` (
+CREATE TABLE IF NOT EXISTS `notes` (
    `id` INT AUTO_INCREMENT PRIMARY KEY,
    `user_id` INT NOT NULL,
    `description` VARCHAR(200) NOT NULL,
    `deadline` TIMESTAMP NOT NULL,
    `modified_at` TIMESTAMP,
    `done` BOOLEAN NOT NULL,
-   `labels` VARCHAR(20)
+   `labels` VARCHAR(20),
+   CONSTRAINT fk_users FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`)
 );
 
 CREATE TABLE IF NOT EXISTS `birthdays` (
    `id` INT AUTO_INCREMENT PRIMARY KEY,
    `user_id` INT NOT NULL,
    `date` TIMESTAMP,
-   `description` VARCHAR(50) NOT NULL
+   `description` VARCHAR(50) NOT NULL,
+   CONSTRAINT fk_users2 FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`)
 );
 
 CREATE TABLE IF NOT EXISTS `holidays` (

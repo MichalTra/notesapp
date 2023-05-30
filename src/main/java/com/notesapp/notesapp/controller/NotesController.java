@@ -38,7 +38,7 @@ public class NotesController {
     public boolean changeNoteDoneStatus(int id) {
         Note note = notesRepository.findById(id);
         if (note != null) {
-            note.setDone(!note.getDone());
+            note.setDone(!note.isDone());
             notesRepository.save(note);
             return true;
         } else {

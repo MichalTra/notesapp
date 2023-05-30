@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Note</title>
+</head>
+<body>
+
+    <!-- header -->
+        <div th:replace="~{header :: header}">...</div>
+    <!-- //header -->
+
+    <div>
+    <form th:action="@{/submitLoginInformation}" method="post">
+        <div class="error" th:if="${!#strings.isEmpty(errors)}" th:text="${errors}"></div>
+        <div class="message" th:if="${!#strings.isEmpty(message)}" th:text="${message}"></div>
+        <div class="flex-row">
+            <div>
+                <label for="username">Username</label>
+                <br>
+                <input type="text" id="username"/>
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <br>
+                <input type="password" id="password"/>
+            </div>
+        </div>
+        <label for="create">Create New User</label>
+        <input type="checkbox" id="create"/>
+        <br>
+        <button>Proceed</button>
+    </form>
+    </div>
+
+</body>
+</html>

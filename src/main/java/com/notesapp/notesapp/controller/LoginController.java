@@ -1,39 +1,98 @@
 package com.notesapp.notesapp.controller;
 
+import com.notesapp.notesapp.model.User;
+import com.notesapp.notesapp.repository.UsersRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LoginController {
 
+    @Autowired
+    private UsersRepository usersRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @RequestMapping(value={"","/","/login"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String displayLoginPage(@RequestParam(value = "logout", required = false) String logout,
-                                   @RequestParam(value = "error", required = false) String error) {
-        String messageForUser = null;
+    public ModelAndView displayLoginPage(@RequestParam(value = "logout", required = false) String logout,
+                                   @RequestParam(value = "error", required = false) String error,
+                                         Model model) {
+        model.addAttribute("user", new User()); // send an empty user object to be filled by /submitLoginInformation action
+
+        String errors = null;
+        String message = null;
         if (error != null) {
-            messageForUser = "Error";
+            errors = "Error";
         } else if (logout != null && logout.equals("true")) {
-            messageForUser = "Logout was successful";
+            message = "Logout was successful";
         }
-        return "login.html";
+        ModelAndView modelAndView = new ModelAndView("login.html");
+        modelAndView.addObject("message", message);
+        modelAndView.addObject("error", errors);
+        return modelAndView;
     }
 
+    // handle login/register
     @RequestMapping(value="/submitLoginInformation", method = RequestMethod.POST)
-    public ModelAndView attemptLogin(Authentication authentication) {
+    public ModelAndView attemptLogin(@Valid @ModelAttribute("user") User user, Errors errors) {
 
-        if (authentication.isAuthenticated()) {
-            // redirect to NotesController
-            ModelAndView modelAndView = new ModelAndView("notes.html");
-            return modelAndView;
-        } else {
+        // Invalid data from user
+        if (errors.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView("login.html");
-            modelAndView.addObject("errors","Login was not successful");
+            modelAndView.addObject("errors", "Invalid data");
             return modelAndView;
         }
+
+        // Create a new user
+        if (user.isCreateNewUser()) {
+            User cmpUser = usersRepository.getByUsername(user.getUsername());
+            if (cmpUser != null) {
+                ModelAndView modelAndView = new ModelAndView("login.html");
+                modelAndView.addObject("errors", "The user already exists");
+                return modelAndView;
+            } else {
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+                User savedUser = usersRepository.save(user);
+                if (savedUser == null || savedUser.getUserId() <= 0) {
+                    ModelAndView modelAndView = new ModelAndView("login.html");
+                    modelAndView.addObject("errors", "Saving the user failed");
+                    return modelAndView;
+                }
+                ModelAndView modelAndView = new ModelAndView("notes.html");
+                return modelAndView;
+            }
+        } else {
+            User cmpUser = usersRepository.getByUsername(user.getUsername());
+            if (cmpUser == null || !passwordEncoder.matches(user.getPassword(), cmpUser.getPassword())) {
+                ModelAndView modelAndView = new ModelAndView("login.html");
+                modelAndView.addObject("errors", "Invalid credentials");
+                return modelAndView;
+            } else {
+                ModelAndView modelAndView = new ModelAndView("notes.html");
+                return modelAndView;
+            }
+        }
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        }
+        return "redirect:/login?logout=true";
     }
 
 }

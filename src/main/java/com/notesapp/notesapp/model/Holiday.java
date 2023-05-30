@@ -20,11 +20,14 @@ public class Holiday {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private int id;
+
     @NotNull(message = "The localization info must be set")
     @NotBlank(message = "The localization info must be set")
     private String localization;
+
     @NotNull(message = "The holiday date cannot be undefined")
     private Date date;
+
     @NotNull(message = "Description must not be empty")
     @NotBlank(message = "Description must not be empty")
     @Size(min=1, max=50, message = "Description must be at least one character long, at most 50 characters long")

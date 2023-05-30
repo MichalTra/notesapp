@@ -9,25 +9,28 @@
 <body>
 
   <!-- header -->
-        <div th:replace="header :: header"></div>
+    <!-- OBSOLETE SYNTAX - does not contain ~{} <div th:replace="header :: header"></div> -->
+    <header th:insert="~{header.html :: header}"></header>
   <!-- //header -->
 
   <div class="center">
-    <form th:action="@{/submitLoginInformation}" method="post">
+    <form th:action="@{/submitLoginInformation}" method="post" th:object="${user}">
+      <div class="errors" th:if="${!#strings.isEmpty(errors)}" th:text="${errors}"></div>
+      <div class="message" th:if="${!#strings.isEmpty(message)}" th:text="${message}"></div>
       <div class="flex-row">
         <div>
           <label for="username">Username</label>
           <br>
-          <input type="text" id="username"/>
+          <input type="text" th:field="*{username}" id="username"/>
         </div>
         <div>
           <label for="password">Password</label>
           <br>
-          <input type="password" id="password"/>
+          <input type="password" th:field="*{password}" id="password"/>
         </div>
       </div>
       <label for="create">Create New User</label>
-      <input type="checkbox" id="create"/>
+      <input type="checkbox" th:field="*{createNewUser}" id="create"/>
       <br>
       <button>Proceed</button>
     </form>
