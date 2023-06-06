@@ -1,17 +1,27 @@
-center {
-    margin: auto;
-    background-color: yellow;
+body {
+    background-color: rgb(220, 220, 244);
 }
 
-flex-row {
+.login {
+    max-width: 600px;
+    margin: auto;
+}
+
+.flex-row {
     display: flex;
     flex-direction: row;
 }
 
-errors {
+.errors {
     color: red;
+    font-weight: bold;
 }
 
-message {
+.message {
     color: blue;
+    font-weight: bold;
+}
+
+.margin2px {
+    margin: 2px;
 }

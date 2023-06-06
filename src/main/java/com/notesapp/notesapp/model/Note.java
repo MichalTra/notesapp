@@ -19,9 +19,9 @@ public class Note {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
-    private int id;
+    private long id;
 
-    private int userId;
+    private long userId;
 
     @NotNull(message = "Description must not be empty")
     @NotBlank(message = "Description must not be empty")

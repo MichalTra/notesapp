@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface NotesRepository extends CrudRepository<Note, Integer> {
 
-    List<Note> findByUserId(int userId);
-    Note findById(int id);
+    List<Note> findByUserId(long userId);
+    Note findById(long id);
 
 }

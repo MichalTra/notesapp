@@ -2,6 +2,7 @@ package com.notesapp.notesapp.controller;
 
 import com.notesapp.notesapp.model.User;
 import com.notesapp.notesapp.repository.UsersRepository;
+import com.notesapp.notesapp.security.AuthenticationHelper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -23,7 +24,10 @@ public class LoginController {
     private UsersRepository usersRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AuthenticationHelper authenticationHelper;
 
     @RequestMapping(value={"","/","/login"}, method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView displayLoginPage(@RequestParam(value = "logout", required = false) String logout,
@@ -46,7 +50,7 @@ public class LoginController {
 
     // handle login/register
     @RequestMapping(value="/submitLoginInformation", method = RequestMethod.POST)
-    public ModelAndView attemptLogin(@Valid @ModelAttribute("user") User user, Errors errors) {
+    public ModelAndView attemptLogin(@Valid @ModelAttribute("user") User user, Errors errors, Authentication authentication) {
 
         // Invalid data from user
         if (errors.hasErrors()) {
@@ -55,9 +59,9 @@ public class LoginController {
             return modelAndView;
         }
 
+        User cmpUser = usersRepository.getByUsername(user.getUsername());
         // Create a new user
         if (user.isCreateNewUser()) {
-            User cmpUser = usersRepository.getByUsername(user.getUsername());
             if (cmpUser != null) {
                 ModelAndView modelAndView = new ModelAndView("login.html");
                 modelAndView.addObject("errors", "The user already exists");
@@ -71,16 +75,19 @@ public class LoginController {
                     return modelAndView;
                 }
                 ModelAndView modelAndView = new ModelAndView("notes.html");
+                authenticationHelper.manualAuthenticate(authentication, user.getUsername(), user.getPassword());
+                modelAndView.addObject("loggedUser", authenticationHelper.getLoggedUser(authentication));
                 return modelAndView;
             }
         } else {
-            User cmpUser = usersRepository.getByUsername(user.getUsername());
             if (cmpUser == null || !passwordEncoder.matches(user.getPassword(), cmpUser.getPassword())) {
                 ModelAndView modelAndView = new ModelAndView("login.html");
                 modelAndView.addObject("errors", "Invalid credentials");
                 return modelAndView;
             } else {
                 ModelAndView modelAndView = new ModelAndView("notes.html");
+                authenticationHelper.manualAuthenticate(authentication, user.getUsername(), user.getPassword());
+                modelAndView.addObject("loggedUser", authenticationHelper.getLoggedUser(authentication));
                 return modelAndView;
             }
         }

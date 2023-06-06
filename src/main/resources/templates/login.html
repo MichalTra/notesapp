@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Note App</title>
-  <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
 </head>
 <body>
 
@@ -13,17 +13,17 @@
     <header th:insert="~{header.html :: header}"></header>
   <!-- //header -->
 
-  <div class="center">
+  <div class="login">
     <form th:action="@{/submitLoginInformation}" method="post" th:object="${user}">
       <div class="errors" th:if="${!#strings.isEmpty(errors)}" th:text="${errors}"></div>
       <div class="message" th:if="${!#strings.isEmpty(message)}" th:text="${message}"></div>
       <div class="flex-row">
-        <div>
+        <div class="margin2px">
           <label for="username">Username</label>
           <br>
           <input type="text" th:field="*{username}" id="username"/>
         </div>
-        <div>
+        <div class="margin2px">
           <label for="password">Password</label>
           <br>
           <input type="password" th:field="*{password}" id="password"/>

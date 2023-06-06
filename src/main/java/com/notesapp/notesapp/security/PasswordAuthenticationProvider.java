@@ -11,10 +11,12 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class PasswordAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
@@ -36,7 +38,7 @@ public class PasswordAuthenticationProvider implements AuthenticationProvider {
         }
     }
 
-    private List<GrantedAuthority> getGrantedAuthorities(String role) {
+    public List<GrantedAuthority> getGrantedAuthorities(String role) {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role));
         return grantedAuthorities;

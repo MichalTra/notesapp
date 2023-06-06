@@ -19,9 +19,9 @@ public class Birthday {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
-    private int id;
+    private long id;
     @NotNull(message = "User (owner) ID must be defined")
-    private int userId;
+    private long userId;
     @NotNull(message = "The birthday date cannot be undefined")
     private Date date;
     @NotNull(message = "Description must not be empty")

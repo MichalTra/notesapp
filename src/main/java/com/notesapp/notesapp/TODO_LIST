@@ -8,3 +8,9 @@ Adjustments in UI - login form alignment, error messages
 Think about special chars in password (allowed/forbidden)
 
 LoginController should handle different types of errors
+
+
+
+Write down what endpoint send what information to the page
+notes.html should show the logged in user (if not logged, then redirect to login)
+check that new users are written into the database

@@ -22,6 +22,11 @@ public class ProjectSecurityConfig {
                 .requestMatchers("/calendar").authenticated()
                 .requestMatchers("/note").authenticated()
                 .requestMatchers("/edit").authenticated()
+                .requestMatchers("/logout").authenticated()
+                .requestMatchers("/newNote").authenticated()
+                .requestMatchers("/editNote").authenticated()
+                .requestMatchers("/changeNoteDoneStatus").authenticated()
+                .requestMatchers("/notedetail").authenticated()
                 // login page and all it contains must be publicly available
                 .requestMatchers("/login").permitAll()
                 .requestMatchers("/assets/**").permitAll()

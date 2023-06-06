@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>Note App Header</title>
@@ -9,6 +10,9 @@
     <header>
         <div>
             Simple Note App
+            <br>
+            <div sec:authorize="isAuthenticated()" th:if="${!#strings.isEmpty(loggedUser)}" th:text="Logged in as ${loggedUser}"></div>
+            <button sec:authorize="isAuthenticated()" th:if="${!#strings.isEmpty(loggedUser)}" th:text="Log out" th:action="@{/logout}"></button>
         </div>
     </header>
 

@@ -19,7 +19,7 @@ public class Holiday {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
-    private int id;
+    private long id;
 
     @NotNull(message = "The localization info must be set")
     @NotBlank(message = "The localization info must be set")
